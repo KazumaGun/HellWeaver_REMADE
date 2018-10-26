@@ -20,12 +20,19 @@ public class Hero : MonoBehaviour
     private int doubleJump;
     public int doubleJumpValue;
 
+    //SPRITE ANIMATIONS\\
+    private Animator heroAnimator;
+
 
 	
 	void Start ()
     {
+        //JMUPING AND MOVING\\
         doubleJump = doubleJumpValue;
         heroRigidbody = GetComponent<Rigidbody2D>();
+
+        //SPRITE ANIMATOR\\
+        heroAnimator = GetComponent<Animator>();
 	}
 	
 	
@@ -34,7 +41,9 @@ public class Hero : MonoBehaviour
         heroRigidbody.velocity = new Vector2(heroSpeed, heroRigidbody.velocity.y); 
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
-	}
+
+        
+    }
 
     void Update()
     {
@@ -55,5 +64,8 @@ public class Hero : MonoBehaviour
             heroRigidbody.velocity = Vector2.up * jumpForce;
             
         }
+        heroAnimator.SetFloat("Speed", heroRigidbody.velocity.x);
+        heroAnimator.SetBool("Grounded", isGrounded);
+
     }
 }
