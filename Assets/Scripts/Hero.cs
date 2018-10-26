@@ -11,24 +11,49 @@ public class Hero : MonoBehaviour
     private Rigidbody2D heroRigidbody;
 
     //CHECKING FOR GORUND\\
-    public bool isGrounded;
+    private bool isGrounded;
+    public Transform groundCheck;
+    public float checkRadius;
     public LayerMask whatIsGround;
+
+    //JUMPING\\
+    private int doubleJump;
+    public int doubleJumpValue;
 
 
 	
 	void Start ()
     {
+        doubleJump = doubleJumpValue;
         heroRigidbody = GetComponent<Rigidbody2D>();
 	}
 	
 	
-	void Update ()
+	void FixedUpdate ()
     {
-        heroRigidbody.velocity = new Vector2(heroSpeed, heroRigidbody.velocity.y);
+        heroRigidbody.velocity = new Vector2(heroSpeed, heroRigidbody.velocity.y); 
 
-        if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-        {
-            heroRigidbody.velocity = new Vector2(heroRigidbody.velocity.x, jumpForce);
-        }
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 	}
+
+    void Update()
+    {
+        //CHECKING GROUND\\
+        if(isGrounded == true)
+        {
+            doubleJump = doubleJumpValue;
+        }
+        //JUMPING\\
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) && doubleJump > 0)
+        {
+            heroRigidbody.velocity = Vector2.up * jumpForce;
+            doubleJump--;
+        }
+        else
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) && doubleJump == 0 && isGrounded == true)
+        {
+            heroRigidbody.velocity = Vector2.up * jumpForce;
+            
+        }
+    }
 }
