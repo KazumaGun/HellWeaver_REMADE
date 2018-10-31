@@ -6,23 +6,44 @@ public class PlatformSpawnerScript : MonoBehaviour
 {
     public GameObject thePlatform;
     public Transform PlatformSpawnPoint;
-    public float disBetween;
-    private float platformWidth;
+    public float distanceBetween;
+    [SerializeField] private float platformWidth;
+    [SerializeField] private float platformWidthMod;
+
+    //RANDOM DISTANCE BETWEEN PLATFORMS\\
+    [SerializeField] public float distanceBetweenMin;
+    [SerializeField] public float distanceBetweenMax;
+
+   
+
 
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
-        platformWidth = thePlatform.GetComponent<BoxCollider2D>().size.x;
-	}
-	
-	// Update is called once per frame
-	void Update ()
+        platformWidth = (thePlatform.GetComponent<BoxCollider2D>().size.x * platformWidthMod);
+    }
+
+
+    // Update is called once per frame
+    void Update()
     {
-		if(transform.position.x < PlatformSpawnPoint.position.x)
+        if (transform.position.x < PlatformSpawnPoint.position.x)
         {
-            transform.position = new Vector3(transform.position.x + platformWidth + disBetween, transform.position.y, transform.position.z);
-            Instantiate(thePlatform, transform.position, transform.rotation);
+            distanceBetween = Random.Range(distanceBetweenMin, distanceBetweenMax);
+
+         
+
+            transform.position = new Vector3(transform.position.x + platformWidth + distanceBetween, transform.position.y, transform.position.z);
+
+
+
+            Instantiate (thePlatform, transform.position, transform.rotation);
         }
-	}
+    }
+
+
 }
+
+
+
