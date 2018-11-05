@@ -49,6 +49,7 @@ public class SwipeTest : MonoBehaviour
                 if (swipeTime < maxTime && swipeDistance > minSwipeDistance)
                 {
                     Swipe();
+                   
                 }
             }
         }
