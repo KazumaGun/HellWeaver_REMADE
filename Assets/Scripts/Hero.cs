@@ -10,6 +10,10 @@ public class Hero : MonoBehaviour
 
     private Rigidbody2D heroRigidbody;
 
+    //HERO HEALTH\\
+    public int currentHealth;
+    public int maxHealth = 5; 
+
     //CHECKING FOR GORUND\\
     private bool isGrounded;
     public Transform groundCheck;
@@ -33,6 +37,9 @@ public class Hero : MonoBehaviour
 
         //SPRITE ANIMATOR\\
         heroAnimator = GetComponent<Animator>();
+
+        //SETTING THE HEALTH AT START OF GAME\\
+        currentHealth = maxHealth;
 	}
 	
 	
@@ -42,7 +49,6 @@ public class Hero : MonoBehaviour
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
-        
     }
 
     void Update()
@@ -66,6 +72,26 @@ public class Hero : MonoBehaviour
         }
         heroAnimator.SetFloat("Speed", heroRigidbody.velocity.x);
         heroAnimator.SetBool("Grounded", isGrounded);
+
+        //CHECKING FOR HERO HEALTH\\
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+
+        if (currentHealth <= 0)
+        {
+            Death();
+        }
+    
+
+    }
+
+    void Death()
+    {
+        //restarting the game\\
+        Application.LoadLevel(Application.loadedLevel);
+
 
     }
 }
