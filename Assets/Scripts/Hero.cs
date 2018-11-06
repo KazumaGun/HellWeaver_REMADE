@@ -131,14 +131,15 @@ public class Hero : MonoBehaviour
         yield return new WaitForSeconds(4);
         speedBoost = false;
     }
+
+    //WALK THROUGH WALLS BOOST\\
     public IEnumerator WalkThroughBoost()
     {
-        Physics2D.IgnoreLayerCollision(8, 10, true);
+        Physics2D.IgnoreLayerCollision(9, 10, true);
         walkThroughBoost = true;
         yield return new WaitForSeconds(7);
-        Physics2D.IgnoreLayerCollision(8, 10, false);
+        Physics2D.IgnoreLayerCollision(9, 10, false);
         walkThroughBoost = false;
-
     }
 
 
