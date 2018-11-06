@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Hero
+  - LostSoul
+  - SoulManager
+  - ImpBattleTrigger
+  - SpeedBoost
   layers:
   - Default
   - TransparentFX

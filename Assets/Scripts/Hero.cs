@@ -12,7 +12,10 @@ public class Hero : MonoBehaviour
 
     //HERO HEALTH\\
     public int currentHealth;
-    public int maxHealth = 5; 
+    public int maxHealth = 5;
+
+    //FOR DAMAGE\\
+
 
     //CHECKING FOR GORUND\\
     private bool isGrounded;
@@ -27,9 +30,20 @@ public class Hero : MonoBehaviour
     //SPRITE ANIMATIONS\\
     private Animator heroAnimator;
 
+    //COLLECTING SOULS\\
+    private SoulManager sm;
 
-	
-	void Start ()
+    //POWER UPS\\
+    [Header("Pick Ups")]
+    [SerializeField] bool speedBoost;
+    [SerializeField] public float boostSpeed;
+    [SerializeField] bool walkThroughBoost;
+    [SerializeField] Collider2D walkThroughBoostCollider;
+  
+
+
+
+    void Start()
     {
         //JMUPING AND MOVING\\
         doubleJump = doubleJumpValue;
@@ -40,21 +54,28 @@ public class Hero : MonoBehaviour
 
         //SETTING THE HEALTH AT START OF GAME\\
         currentHealth = maxHealth;
-	}
-	
-	
-	void FixedUpdate ()
+
+        //SOULS\\
+        sm = GameObject.FindGameObjectWithTag("SoulManager").GetComponent<SoulManager>();
+    }
+
+
+    void FixedUpdate()
     {
-        heroRigidbody.velocity = new Vector2(heroSpeed, heroRigidbody.velocity.y); 
+        heroRigidbody.velocity = new Vector2(heroSpeed, heroRigidbody.velocity.y);
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
     }
 
+
+
+
+
     void Update()
     {
         //CHECKING GROUND\\
-        if(isGrounded == true)
+        if (isGrounded == true)
         {
             doubleJump = doubleJumpValue;
         }
@@ -68,7 +89,7 @@ public class Hero : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) && doubleJump == 0 && isGrounded == true)
         {
             heroRigidbody.velocity = Vector2.up * jumpForce;
-            
+
         }
         heroAnimator.SetFloat("Speed", heroRigidbody.velocity.x);
         heroAnimator.SetBool("Grounded", isGrounded);
@@ -83,15 +104,98 @@ public class Hero : MonoBehaviour
         {
             Death();
         }
-    
+
+        //CHECKING FOR SPEED BOOST\\
+        if (!speedBoost)
+        {
+            heroSpeed = heroSpeed;
+        }
+        else
+        if (speedBoost)
+        {
+            heroSpeed = boostSpeed;
+        }
+
 
     }
+
+
+
+
+
+    //SPEED BOOST\\
+    public IEnumerator SpeedBoost()
+    {
+        Debug.Log("SPEED BOOST");
+        speedBoost = true;
+        yield return new WaitForSeconds(4);
+        speedBoost = false;
+    }
+    public IEnumerator WalkThroughBoost()
+    {
+        Physics2D.IgnoreLayerCollision(8, 10, true);
+        walkThroughBoost = true;
+        yield return new WaitForSeconds(7);
+        Physics2D.IgnoreLayerCollision(8, 10, false);
+        walkThroughBoost = false;
+
+    }
+
+
+
+    public void Damage(int damage) //reduced health here
+    {
+        currentHealth -= damage;
+    }
+
+
+
+
+
+
+
+
 
     void Death()
     {
         //restarting the game\\
         Application.LoadLevel(Application.loadedLevel);
+    }
 
+    /*public IEnumerator hitB(float hitBForce, float hitBPower, Vector3 hitBDirection)
+    {
+        float timer = 0;
+
+        while( hitBForce > timer )
+        {
+            timer += Time.deltaTime;
+            heroRigidbody.AddForce(new Vector3(hitBDirection.x * -100, hitBPower, transform.position.z));
+        }
+        yield return 0;
+    }*/ //used for hitback
+
+
+
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("LostSoul"))
+        {
+            Destroy(collision.gameObject);
+            sm.souls += 1;  //Adding souls to counter
+        }
+
+        if (collision.CompareTag("ImpBattleTrigger"))
+        {
+            Application.LoadLevel(4);
+        }
+
+
+        if (gameObject.tag == "SpeedBoost")
+        {
+
+
+        }
 
     }
 }

@@ -33,6 +33,8 @@ public class PauseMenu : MonoBehaviour
             PauseUI.SetActive(false);
             Time.timeScale = 1;  //back to normal time can make slo motion
         }
+
+
 	}
 
 
@@ -60,4 +62,6 @@ public class PauseMenu : MonoBehaviour
     {
         Application.LoadLevel(1);
     }
+
+    
 }
