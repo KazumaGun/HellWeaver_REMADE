@@ -11,6 +11,8 @@ TagManager:
   - SpeedBoost
   - Wall
   - WalkThroughBoost
+  - Boss
+  - ImpBoss
   layers:
   - Default
   - TransparentFX

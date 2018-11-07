@@ -130,6 +130,10 @@ public class Hero : MonoBehaviour
         speedBoost = true;
         yield return new WaitForSeconds(4);
         speedBoost = false;
+
+        //ACHIEVEMENTS\\
+        Achievement achievement = AchievementManager.Instance.GetAchievement("Baby Hunter");
+        Debug.Log("The Baby Hunter achievement goal is : " + achievement.Goal);
     }
 
     //WALK THROUGH WALLS BOOST\\
