@@ -10,13 +10,13 @@ public class MainMenuUI : MonoBehaviour
 
     public void PlayTutorial()
     {
-        Application.LoadLevel(1);
+        Application.LoadLevel(2);
     }
 
 
     public void StartGame()
     {
-        Application.LoadLevel(0);
+        Application.LoadLevel(1);
     }
 
 

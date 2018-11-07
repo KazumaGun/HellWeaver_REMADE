@@ -57,6 +57,8 @@ public class AchievementTest : MonoBehaviour
         {
             Achievement achievement = AchievementManager.Instance.GetAchievement("Soul Eater");
             AchievementManager.Instance.SaveAchievement("Soul Eater", 1);
+            //FOR CLOUD\\   
+            GS_AchievementManager.instance.UpdateAchievement("BabyHunter", 1);
 
         }
 
@@ -67,6 +69,7 @@ public class AchievementTest : MonoBehaviour
         {
             Achievement achievement2 = AchievementManager.Instance.GetAchievement("Baby Hunter");
             AchievementManager.Instance.SaveAchievement("Baby Hunter", 1);
+            GS_AchievementManager.instance.UpdateAchievement("BabyHunter", 1);
         }
 
 

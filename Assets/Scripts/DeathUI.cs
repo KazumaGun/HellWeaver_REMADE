@@ -11,7 +11,7 @@ public class DeathUI : MonoBehaviour
 
     public void MainMenu()
     {
-        Application.LoadLevel(2);
+        Application.LoadLevel(0);
     }
 
 }
