@@ -19,7 +19,7 @@ public class AchievementManager : MonoBehaviour
             Destroy(this.gameObject);
 
         // Add achievements to the dictionary
-        achievements.Add("Soul Eater", new Achievement("Soul Eater", "Collect 5 Lost Souls", 5, false));
+        achievements.Add("SoulEater", new Achievement("SoulEater", "Collect 5 Lost Souls", 5, false));
 
         achievements.Add("Baby Hunter", new Achievement("Baby Hunter", "Killed your first Boss!", 1, false));
 

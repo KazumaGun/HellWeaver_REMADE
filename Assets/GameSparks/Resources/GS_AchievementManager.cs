@@ -19,7 +19,8 @@ using GameSparks.Api.Responses;
  * 
  * ---------------------------------------------------*/
 
-public class GS_AchievementManager : MonoBehaviour {
+public class GS_AchievementManager : MonoBehaviour
+{
 
     public static GS_AchievementManager instance = null;
 
@@ -56,7 +57,15 @@ public class GS_AchievementManager : MonoBehaviour {
         .SetEventAttribute("name", name)
         .SetEventAttribute("amount", amount)
         .Send((response) => {
-            GSData scriptData = response.ScriptData;
+            if (!response.HasErrors)
+            {
+                GSData scriptData = response.ScriptData;
+                Debug.Log("Event ran");
+            }
+            else
+            {
+                Debug.Log("Problem with server event");
+            }
         });
     }
 
@@ -73,6 +82,9 @@ public class GS_AchievementManager : MonoBehaviour {
                 {
                     GSData scriptData = response.ScriptData;
                     Debug.Log("SoulEater progress: " + scriptData.GetInt("SoulEater"));
+
+                    //assign that value to the achievemetns in the player prefs
+                    //save it client side
                 }
                 else
                 {
@@ -87,16 +99,16 @@ public class GS_AchievementManager : MonoBehaviour {
         new LogEventRequest()
             .SetEventKey("RemoveAchievement")
             .SetEventAttribute("name", name)
-            .Send((response) => {
+            .Send((response) => { //is there a response coming back?
                 if (!response.HasErrors)
                 {
-                    GSData scriptData = response.ScriptData;
-                    Debug.Log(name + " achievement removed"); 
+                    GSData scriptData = response.ScriptData; //script data coming back from response
+                    Debug.Log(name + " achievement removed"); //the current value of the achievement
                     Debug.Log(name + " progress: " + scriptData.GetInt(name));
                 }
                 else
                 {
-
+                    Debug.Log("Remove achievement was not called on the server.");
                 }
             });
     }

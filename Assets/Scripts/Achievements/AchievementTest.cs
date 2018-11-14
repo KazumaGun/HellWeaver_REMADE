@@ -15,7 +15,7 @@ public class AchievementTest : MonoBehaviour
         Debug.Log(newAchievement.Title);
         */
 
-        Achievement achievement = AchievementManager.Instance.GetAchievement("Soul Eater");
+        Achievement achievement = AchievementManager.Instance.GetAchievement("SoulEater");
         Debug.Log("The Soul Eater achievement goal is : " + achievement.Goal);   //can put under pick up tiems scripts.
 
 
@@ -55,11 +55,18 @@ public class AchievementTest : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Achievement achievement = AchievementManager.Instance.GetAchievement("Soul Eater");
-            AchievementManager.Instance.SaveAchievement("Soul Eater", 1);
+            Achievement achievement = AchievementManager.Instance.GetAchievement("SoulEater");
+            AchievementManager.Instance.SaveAchievement("SoulEater", 1);
             //FOR CLOUD\\   
-            GS_AchievementManager.instance.UpdateAchievement("BabyHunter", 1);
+            GS_AchievementManager.instance.UpdateAchievement("SoulEater", 1);
+            GS_AchievementManager.instance.LoadAchievements();
 
+        }
+
+        //TO REMOVE ACHIEVEMENT DEBUGGING PURPOSES\\
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            GS_AchievementManager.instance.RemoveAchievement("SoulEater");
         }
 
 
@@ -67,9 +74,9 @@ public class AchievementTest : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            Achievement achievement2 = AchievementManager.Instance.GetAchievement("Baby Hunter");
-            AchievementManager.Instance.SaveAchievement("Baby Hunter", 1);
-            GS_AchievementManager.instance.UpdateAchievement("BabyHunter", 1);
+            //Achievement achievement2 = AchievementManager.Instance.GetAchievement("Baby Hunter");
+            //AchievementManager.Instance.SaveAchievement("Baby Hunter", 1);
+            GS_AchievementManager.instance.UpdateAchievement("Baby Hunter", 1);
         }
 
 
@@ -126,7 +133,7 @@ public class AchievementTest : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            PlayerPrefs.DeleteKey("Soul Eater");
+            PlayerPrefs.DeleteKey("SoulEater");
             PlayerPrefs.DeleteKey("Baby Hunter");
             PlayerPrefs.DeleteKey("Devourer of Souls");
             PlayerPrefs.DeleteKey("The First of Many");
