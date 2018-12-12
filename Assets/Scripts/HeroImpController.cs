@@ -6,7 +6,7 @@ public class HeroImpController : MonoBehaviour
 {
     //HERO MOVEMENTS\\
     public float heroSpeed;
-    public float jumpForce;
+    public float jumpHeight;
 
     private Rigidbody2D heroRigidbody;
 
@@ -18,13 +18,13 @@ public class HeroImpController : MonoBehaviour
 
 
     //CHECKING FOR GORUND\\
-    private bool isGrounded;
+    private bool grounded;
     public Transform groundCheck;
-    public float checkRadius;
+    public float groundCheckRadius;
     public LayerMask whatIsGround;
 
     //JUMPING\\
-    private int doubleJump;
+    public bool doubleJump;
     public int doubleJumpValue;
 
     //SPRITE ANIMATIONS\\
@@ -45,8 +45,7 @@ public class HeroImpController : MonoBehaviour
 
     void Start()
     {
-        //JMUPING AND MOVING\\
-        doubleJump = doubleJumpValue;
+
         heroRigidbody = GetComponent<Rigidbody2D>();
 
         //SPRITE ANIMATOR\\
@@ -62,71 +61,46 @@ public class HeroImpController : MonoBehaviour
 
     void FixedUpdate()
     {
-        //heroRigidbody.velocity = new Vector2(heroSpeed, heroRigidbody.velocity.y);
-
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
-
+       grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
     }
-
-
-    //BOSS BATTLE CONTROLS FOR HERO HERE\\
-    //START\\
-
-
-
-    void MoveRight()
-    {
-        Vector2 position = transform.position;
-        position.x += heroSpeed;
-        transform.position = position;
-    }
-
-    void MoveLeft()
-    {
-        Vector2 position = transform.position;
-        position.x -= heroSpeed;
-        transform.position = position;
-    }
-
-
-    //BOSS BATTLE CONTROLS FOR HERE END HERE\\
-    //END HERE\\
-
 
     void Update()
     {
         //CHECKING GROUND\\
-        if (isGrounded == true)
+        if (grounded == true)
         {
-            doubleJump = doubleJumpValue;
+            doubleJump = false;
         }
+
         //JUMPING\\
-        if (Input.GetMouseButtonDown(0) && doubleJump > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && grounded)
         {
-            heroRigidbody.velocity = Vector2.up * jumpForce;
-            doubleJump--;
+            //heroRigidbody.velocity = new Vector2(heroRigidbody.velocity.x, jumpHeight);
+            Jump();
+           
         }
-        else
-        if (Input.GetMouseButtonDown(0) && doubleJump == 0 && isGrounded == true)
+        
+        if (Input.GetKeyDown(KeyCode.Space) && !doubleJump && !grounded)
         {
-            heroRigidbody.velocity = Vector2.up * jumpForce;
+            //heroRigidbody.velocity = new Vector2(heroRigidbody.velocity.x, jumpHeight);
+            Jump();
+            doubleJump = true;
 
         }
-        heroAnimator.SetFloat("Speed", heroRigidbody.velocity.x);
-        heroAnimator.SetBool("Grounded", isGrounded);
-
 
         //MOVING FOR BOSS BATTLE\\
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
-            MoveRight();
-        }
+            heroRigidbody.velocity = new Vector2 (heroSpeed , heroRigidbody.velocity.y);
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        }
+        
+
+        if (Input.GetKey(KeyCode.A))
         {
-            MoveLeft();
-        }
+            heroRigidbody.velocity = new Vector2(-heroSpeed, heroRigidbody.velocity.y);
 
+        }
 
 
 
@@ -155,34 +129,10 @@ public class HeroImpController : MonoBehaviour
 
     }
 
-
-
-
-
-    //SPEED BOOST\\
-    public IEnumerator SpeedBoost()
+     public void Jump()
     {
-        Debug.Log("SPEED BOOST");
-        speedBoost = true;
-        yield return new WaitForSeconds(4);
-        speedBoost = false;
-
-        //ACHIEVEMENTS\\
-        Achievement achievement = AchievementManager.Instance.GetAchievement("Baby Hunter");
-        Debug.Log("The Baby Hunter achievement goal is : " + achievement.Goal);
+        heroRigidbody.velocity = new Vector2(heroRigidbody.velocity.x, jumpHeight);
     }
-
-    //WALK THROUGH WALLS BOOST\\
-    public IEnumerator WalkThroughBoost()
-    {
-        Physics2D.IgnoreLayerCollision(9, 10, true);
-        walkThroughBoost = true;
-        yield return new WaitForSeconds(7);
-        Physics2D.IgnoreLayerCollision(9, 10, false);
-        walkThroughBoost = false;
-    }
-
-
 
     public void Damage(int damage) //reduced health here
     {
@@ -191,7 +141,10 @@ public class HeroImpController : MonoBehaviour
 
 
 
+    public void Move (float moveInpput)
+    {
 
+    }
 
 
 
@@ -233,11 +186,7 @@ public class HeroImpController : MonoBehaviour
         }
 
 
-        if (gameObject.tag == "SpeedBoost")
-        {
-
-
-        }
+       
 
         if (collision.gameObject.tag == "ImpBoss")
         {
